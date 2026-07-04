@@ -39,6 +39,34 @@ const whyChooseUs = [
     description: "No generic answers — every session is tailored to you.",
   },
 ];
+const affirmations = [
+  "You are exactly where you need to be on your journey.",
+  "Trust the timing of your life; the universe is guiding you.",
+  "Your intuition is a powerful compass — listen to it.",
+  "Peace begins with the choice to release what you cannot control.",
+  "Every challenge you face is shaping your inner wisdom.",
+];
+
+const todaysAffirmation =
+  affirmations[new Date().getDate() % affirmations.length];
+
+const testimonials = [
+  {
+    name: "Priya S.",
+    rating: 5,
+    quote: "The reading gave me so much clarity during a confusing time in my life. I felt truly heard and understood.",
+  },
+  {
+    name: "Rohan M.",
+    rating: 5,
+    quote: "Incredibly insightful and compassionate. I walked away feeling lighter and more confident about my path.",
+  },
+  {
+    name: "Ananya K.",
+    rating: 5,
+    quote: "A calming, safe space to explore my questions. The guidance I received was spot on and deeply meaningful.",
+  },
+];
 
 export default function Home() {
   return (
@@ -135,6 +163,43 @@ export default function Home() {
                 <p className="font-body text-sm text-indigo/70 leading-relaxed">
                   {item.description}
                 </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Daily Affirmation Section */}
+      <section className="bg-indigo py-20">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <span className="font-body text-sm tracking-[0.3em] text-lavender uppercase mb-6 block">
+            Today&apos;s Affirmation
+          </span>
+          <p className="font-heading text-2xl md:text-4xl text-cream leading-snug italic">
+            &ldquo;{todaysAffirmation}&rdquo;
+          </p>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="bg-beige py-20 md:py-28">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <span className="font-body text-sm tracking-[0.3em] text-lavender-dark uppercase mb-4 block">
+              Testimonials
+            </span>
+            <h2 className="font-heading text-3xl md:text-5xl text-indigo">
+              Words From Those I&apos;ve Guided
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((t) => (
+              <div key={t.name} className="bg-cream rounded-2xl p-8 border border-beige">
+                <div className="text-gold mb-4">{"★".repeat(t.rating)}</div>
+                <p className="font-body text-sm text-indigo/80 leading-relaxed mb-6 italic">
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <p className="font-heading text-indigo">{t.name}</p>
               </div>
             ))}
           </div>
