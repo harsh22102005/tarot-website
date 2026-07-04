@@ -3,43 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 
-const blogPosts = [
-  {
-    slug: "understanding-tarot-card-meanings",
-    title: "Understanding Tarot Card Meanings: A Beginner's Guide",
-    category: "Tarot",
-    excerpt: "Discover the fundamental meanings behind the Major and Minor Arcana cards and how to interpret them in your readings.",
-    date: "June 15, 2026",
-  },
-  {
-    slug: "5-healing-practices-for-inner-peace",
-    title: "5 Healing Practices for Inner Peace",
-    category: "Healing",
-    excerpt: "Explore simple yet powerful healing practices you can incorporate into your daily routine for lasting calm.",
-    date: "June 10, 2026",
-  },
-  {
-    slug: "navigating-spiritual-growth",
-    title: "Navigating Your Spiritual Growth Journey",
-    category: "Spiritual Growth",
-    excerpt: "Spiritual growth is not linear. Learn how to embrace each stage of your journey with patience and grace.",
-    date: "June 2, 2026",
-  },
-  {
-    slug: "full-moon-guidance-june",
-    title: "Full Moon Guidance: Setting Intentions",
-    category: "Full Moon",
-    excerpt: "The full moon is a powerful time for reflection and release. Here's how to make the most of this lunar energy.",
-    date: "May 28, 2026",
-  },
-  {
-    slug: "daily-positive-affirmations",
-    title: "The Power of Daily Positive Affirmations",
-    category: "Affirmations",
-    excerpt: "Learn how consistent affirmation practice can rewire your mindset and attract positive change into your life.",
-    date: "May 20, 2026",
-  },
-];
+import { blogPosts } from "../data/blogPosts";
 
 const categories = ["All", "Tarot", "Healing", "Spiritual Growth", "Full Moon", "Affirmations"];
 
