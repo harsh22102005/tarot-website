@@ -205,6 +205,24 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* Contact CTA Section */}
+      <section className="bg-cream py-20 md:py-28">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <h2 className="font-heading text-3xl md:text-5xl text-indigo mb-6">
+            Ready to Begin Your Journey?
+          </h2>
+          <p className="font-body text-base md:text-lg text-indigo/70 mb-10 leading-relaxed">
+            Book a session today and take the first step toward clarity, healing,
+            and peace of mind.
+          </p>
+          <Link
+            href="/contact"
+            className="inline-block bg-indigo text-cream px-10 py-4 rounded-full font-body text-sm hover:bg-lavender-dark transition-colors"
+          >
+            Get in Touch
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }
