@@ -1,24 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-
-import { blogPosts } from "../data/blogPosts";
 
 const categories = ["All", "Tarot", "Healing", "Spiritual Growth", "Full Moon", "Affirmations"];
 
+interface BlogPost {
+  _id: string;
+  title: string;
+  slug: string;
+  category: string;
+  excerpt: string;
+  createdAt: string;
+}
+
 export default function Blog() {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredPosts = blogPosts.filter((post) => {
-    const matchesCategory =
-      selectedCategory === "All" || post.category === selectedCategory;
-    const matchesSearch = post.title
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const url =
+          selectedCategory === "All"
+            ? "http://localhost:5000/api/blogs"
+            : `http://localhost:5000/api/blogs?category=${selectedCategory}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        setPosts(data);
+      } catch (error) {
+        console.error("Failed to fetch blogs:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPosts();
+  }, [selectedCategory]);
+
+  const filteredPosts = posts.filter((post) =>
+    post.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="bg-cream">
@@ -66,7 +89,11 @@ export default function Blog() {
       {/* Blog Grid */}
       <section className="pb-20 md:pb-28">
         <div className="max-w-5xl mx-auto px-6">
-          {filteredPosts.length === 0 ? (
+          {loading ? (
+            <p className="font-body text-indigo/60 text-center py-12">
+              Loading articles...
+            </p>
+          ) : filteredPosts.length === 0 ? (
             <p className="font-body text-indigo/60 text-center py-12">
               No articles found matching your search.
             </p>
@@ -74,7 +101,7 @@ export default function Blog() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {filteredPosts.map((post) => (
                 <Link
-                  key={post.slug}
+                  key={post._id}
                   href={`/blog/${post.slug}`}
                   className="bg-beige rounded-2xl p-8 block hover:shadow-lg transition-shadow"
                 >
@@ -88,7 +115,11 @@ export default function Blog() {
                     {post.excerpt}
                   </p>
                   <span className="font-body text-xs text-indigo/50">
-                    {post.date}
+                    {new Date(post.createdAt).toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
                   </span>
                 </Link>
               ))}
