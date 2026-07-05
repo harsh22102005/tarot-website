@@ -11,6 +11,12 @@ interface Service {
   icon: string;
 }
 
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 const durations = [
   { label: "15 Minutes", price: 500 },
   { label: "30 Minutes", price: 1500 },
@@ -75,7 +81,8 @@ export default function Booking() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/bookings", {
+      // Step 1: Create the booking (status: pending)
+      const bookingRes = await fetch("http://localhost:5000/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -84,9 +91,61 @@ export default function Booking() {
         }),
       });
 
-      if (!res.ok) throw new Error("Failed to create booking");
+      if (!bookingRes.ok) throw new Error("Failed to create booking");
 
-      router.push("/booking/success");
+      const booking = await bookingRes.json();
+
+      // Step 2: Create a Razorpay order
+      const orderRes = await fetch("http://localhost:5000/api/payment/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: formData.price,
+          bookingId: booking._id,
+        }),
+      });
+
+      const order = await orderRes.json();
+
+      // Step 3: Open Razorpay Checkout popup
+      const options = {
+        key: "rzp_test_T9qRfqJLZgD1Z4", // Replace with your actual Key ID
+        amount: order.amount,
+        currency: order.currency,
+        name: "Mystic Path",
+        description: `${formData.duration} - Tarot Session`,
+        order_id: order.id,
+        handler: async function (response: any) {
+          // Step 4: Verify payment after success
+          const verifyRes = await fetch("http://localhost:5000/api/payment/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              bookingId: booking._id,
+            }),
+          });
+
+          if (verifyRes.ok) {
+            router.push("/booking/success");
+          } else {
+            setError("Payment verification failed. Please contact support.");
+          }
+        },
+        prefill: {
+          name: formData.customerName,
+          email: formData.customerEmail,
+          contact: formData.customerPhone,
+        },
+        theme: {
+          color: "#2E2A4A",
+        },
+      };
+
+      const razorpayInstance = new window.Razorpay(options);
+      razorpayInstance.open();
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -113,7 +172,6 @@ export default function Booking() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6 bg-beige/30 p-8 rounded-2xl">
-          {/* Service Selection */}
           <div>
             <label className="font-body text-sm text-indigo/70 block mb-2">
               Select Service
@@ -134,7 +192,6 @@ export default function Booking() {
             </select>
           </div>
 
-          {/* Duration Selection */}
           <div>
             <label className="font-body text-sm text-indigo/70 block mb-3">
               Select Duration
@@ -157,21 +214,19 @@ export default function Booking() {
             </div>
           </div>
 
-          {/* Date Picker */}
           <div>
             <label className="font-body text-sm text-indigo/70 block mb-2">
               Select Date
             </label>
             <DatePicker
-  selected={selectedDate}
-  onChange={(date: Date | null) => setSelectedDate(date)}
-  minDate={new Date()}
-  placeholderText="Choose a date"
-  className="w-full bg-cream border border-beige rounded-lg px-4 py-3 font-body text-indigo focus:outline-none focus:border-lavender-dark"
-/>
+              selected={selectedDate}
+              onChange={(date: Date | null) => setSelectedDate(date)}
+              minDate={new Date()}
+              placeholderText="Choose a date"
+              className="w-full bg-cream border border-beige rounded-lg px-4 py-3 font-body text-indigo focus:outline-none focus:border-lavender-dark"
+            />
           </div>
 
-          {/* Time Slot Selection */}
           <div>
             <label className="font-body text-sm text-indigo/70 block mb-3">
               Select Time Slot
@@ -194,7 +249,6 @@ export default function Booking() {
             </div>
           </div>
 
-          {/* Customer Details */}
           <div>
             <label className="font-body text-sm text-indigo/70 block mb-2">
               Your Name
@@ -242,7 +296,7 @@ export default function Booking() {
             disabled={loading}
             className="w-full bg-indigo text-cream px-8 py-3.5 rounded-full font-body text-sm hover:bg-lavender-dark transition-colors disabled:opacity-50"
           >
-            {loading ? "Booking..." : `Confirm Booking${formData.price ? ` — ₹${formData.price}` : ""}`}
+            {loading ? "Processing..." : `Proceed to Payment${formData.price ? ` — ₹${formData.price}` : ""}`}
           </button>
         </form>
       </div>
