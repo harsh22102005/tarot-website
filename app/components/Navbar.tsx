@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -13,7 +14,23 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<{ name: string } | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    router.push("/");
+  };
 
   return (
     <nav className="bg-cream/90 backdrop-blur-md fixed top-0 left-0 w-full z-50 border-b border-beige">
@@ -37,13 +54,37 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* CTA Button */}
-        <Link
-          href="/services"
-          className="hidden md:block bg-indigo text-cream px-6 py-2.5 rounded-full text-sm hover:bg-lavender-dark transition-colors"
-        >
-          Book a Session
-        </Link>
+        {/* Desktop Right Side */}
+        <div className="hidden md:flex items-center gap-4">
+          {user ? (
+            <>
+              <span className="font-body text-sm text-indigo">
+                Hi, {user.name.split(" ")[0]}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="text-indigo border border-indigo px-5 py-2 rounded-full text-sm hover:bg-indigo hover:text-cream transition-colors"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="text-indigo font-body text-sm hover:text-lavender-dark transition-colors"
+              >
+                Login
+              </Link>
+              <Link
+                href="/services"
+                className="bg-indigo text-cream px-6 py-2.5 rounded-full text-sm hover:bg-lavender-dark transition-colors"
+              >
+                Book a Session
+              </Link>
+            </>
+          )}
+        </div>
 
         {/* Mobile Menu Button */}
         <button
@@ -75,12 +116,34 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
-          <Link
-            href="/services"
-            className="bg-indigo text-cream px-6 py-2.5 rounded-full text-sm text-center"
-          >
-            Book a Session
-          </Link>
+          {user ? (
+            <button
+              onClick={() => {
+                handleLogout();
+                setIsOpen(false);
+              }}
+              className="text-indigo border border-indigo px-6 py-2.5 rounded-full text-sm text-center"
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                onClick={() => setIsOpen(false)}
+                className="text-indigo font-body block py-2"
+              >
+                Login
+              </Link>
+              <Link
+                href="/services"
+                onClick={() => setIsOpen(false)}
+                className="bg-indigo text-cream px-6 py-2.5 rounded-full text-sm text-center"
+              >
+                Book a Session
+              </Link>
+            </>
+          )}
         </ul>
       )}
     </nav>
