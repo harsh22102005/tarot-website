@@ -8,6 +8,7 @@ export default function Contact() {
     email: "",
     message: "",
   });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -15,11 +16,25 @@ export default function Contact() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Backend integration will be added in a later phase
-    console.log("Form submitted:", formData);
-    alert("Thank you! We'll get back to you soon. (Backend not connected yet)");
+    setStatus("loading");
+
+    try {
+      const res = await fetch("http://localhost:5000/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) throw new Error("Failed to send message");
+
+      setStatus("success");
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error(error);
+      setStatus("error");
+    }
   };
 
   return (
@@ -44,6 +59,19 @@ export default function Contact() {
             <h2 className="font-heading text-2xl text-indigo mb-6">
               Send a Message
             </h2>
+
+            {status === "success" && (
+              <div className="bg-sage/20 border border-sage text-indigo rounded-lg px-4 py-3 mb-6 font-body text-sm">
+                Thank you! Your message has been sent successfully.
+              </div>
+            )}
+
+            {status === "error" && (
+              <div className="bg-red-100 border border-red-300 text-red-700 rounded-lg px-4 py-3 mb-6 font-body text-sm">
+                Something went wrong. Please try again later.
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label className="font-body text-sm text-indigo/70 block mb-2">
@@ -89,9 +117,10 @@ export default function Contact() {
 
               <button
                 type="submit"
-                className="bg-indigo text-cream px-8 py-3.5 rounded-full font-body text-sm hover:bg-lavender-dark transition-colors"
+                disabled={status === "loading"}
+                className="bg-indigo text-cream px-8 py-3.5 rounded-full font-body text-sm hover:bg-lavender-dark transition-colors disabled:opacity-50"
               >
-                Send Message
+                {status === "loading" ? "Sending..." : "Send Message"}
               </button>
             </form>
           </div>
