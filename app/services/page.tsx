@@ -1,50 +1,5 @@
 import Link from "next/link";
 
-const services = [
-  {
-    slug: "tarot-reading",
-    icon: "🔮",
-    title: "Tarot Reading",
-    description: "Uncover insights about your past, present, and future through the ancient wisdom of tarot cards.",
-  },
-  {
-    slug: "spiritual-consultation",
-    icon: "🕊️",
-    title: "Spiritual Consultation",
-    description: "One-on-one guidance to help you connect with your inner self and navigate life's path.",
-  },
-  {
-    slug: "healing-prayers",
-    icon: "🙏",
-    title: "Healing Prayers",
-    description: "Guided prayer sessions to bring comfort, strength, and spiritual healing during difficult times.",
-  },
-  {
-    slug: "relationship-guidance",
-    icon: "💞",
-    title: "Relationship Guidance",
-    description: "Gain clarity on matters of the heart and navigate relationships with wisdom and compassion.",
-  },
-  {
-    slug: "career-guidance",
-    icon: "🌟",
-    title: "Career Guidance",
-    description: "Discover your true path and make confident career decisions aligned with your purpose.",
-  },
-  {
-    slug: "energy-healing",
-    icon: "💫",
-    title: "Energy Healing",
-    description: "Restore balance and harmony within through gentle, intuitive energy healing practices.",
-  },
-  {
-    slug: "personalized-guidance",
-    icon: "✨",
-    title: "Personalized Spiritual Guidance",
-    description: "A fully customized session tailored to your unique spiritual journey and questions.",
-  },
-];
-
 const pricing = [
   { duration: "15 Minutes", price: "₹500" },
   { duration: "30 Minutes", price: "₹1,500" },
@@ -52,7 +7,22 @@ const pricing = [
   { duration: "2 Hours", price: "₹6,000" },
 ];
 
-export default function Services() {
+async function getServices() {
+  try {
+    const res = await fetch("http://localhost:5000/api/services", {
+      cache: "no-store",
+    });
+    if (!res.ok) throw new Error("Failed to fetch services");
+    return res.json();
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+export default async function Services() {
+  const services = await getServices();
+
   return (
     <div className="bg-cream">
       {/* Page Header */}
@@ -71,9 +41,9 @@ export default function Services() {
       <section className="py-20 md:py-28">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service) => (
+            {services.map((service: any) => (
               <div
-                key={service.slug}
+                key={service._id}
                 className="bg-beige rounded-2xl p-8 flex flex-col border border-beige"
               >
                 <div className="text-4xl mb-4">{service.icon}</div>
