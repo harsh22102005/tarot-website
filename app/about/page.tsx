@@ -1,3 +1,9 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Me | Mystic Path - Spiritual Guidance & Tarot Reading",
+  description: "Learn about my journey into tarot reading and spiritual guidance, my mission, vision, and the philosophy behind Mystic Path.",
+};
 export default function About() {
   return (
     <div className="bg-cream">

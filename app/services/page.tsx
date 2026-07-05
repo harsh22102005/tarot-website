@@ -1,3 +1,9 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Services & Pricing | Mystic Path - Tarot Reading & Spiritual Guidance",
+  description: "Explore our tarot reading, spiritual consultation, healing prayers, and more. View session pricing starting from ₹500.",
+};
 import Link from "next/link";
 
 const pricing = [
