@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ✦ Mystic Path — Spiritual Guidance & Tarot Reading Website
 
-## Getting Started
+A full-stack web application for booking tarot reading and spiritual consultation sessions, built from scratch with Next.js, Node.js, and MongoDB.
 
-First, run the development server:
+## 🌐 Live Demo
+
+- **Website:** [https://tarot-website-phi.vercel.app](https://tarot-website-phi.vercel.app)
+- **Backend API:** [https://tarot-backend-4pvj.onrender.com](https://tarot-backend-4pvj.onrender.com)
+
+## ✨ Features
+
+- 🏠 Fully designed homepage with hero, services, testimonials, and daily affirmations
+- 🔮 Services page with live pricing (connected to backend)
+- 📅 Interactive booking system with calendar and time slot selection
+- 💳 Razorpay payment gateway integration with signature verification
+- 🔐 JWT-based authentication (Signup/Login/Logout)
+- 📖 Blog system with search, category filters, and dynamic detail pages
+- 👤 Admin dashboard for managing bookings
+- 📱 Fully responsive design
+- 🔍 SEO optimized (metadata, sitemap, robots.txt)
+
+## 🛠️ Tech Stack
+
+- **Framework:** Next.js 15 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS v4
+- **Calendar:** react-datepicker
+- **Payment:** Razorpay
+- **Deployment:** Vercel
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js installed
+- Backend server running ([tarot-backend](https://github.com/harsh22102005/tarot-backend))
+
+### Installation
+
+```bash
+git clone https://github.com/harsh22102005/tarot-website.git
+cd tarot-website
+npm install
+```
+
+Create a `.env.local` file in the root directory:
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📄 Related Repository
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Backend API: [tarot-backend](https://github.com/harsh22102005/tarot-backend)
 
-## Learn More
+## 👤 Author
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Harsh Pratap Singh**
+- GitHub: [@harsh22102005](https://github.com/harsh22102005)
