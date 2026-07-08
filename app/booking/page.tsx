@@ -49,7 +49,7 @@ export default function Booking() {
   useEffect(() => {
     async function fetchServices() {
       try {
-        const res = await fetch("http://localhost:5000/api/services");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/services`);
         const data = await res.json();
         setServices(data);
       } catch (err) {
@@ -81,8 +81,7 @@ export default function Booking() {
     setLoading(true);
 
     try {
-      // Step 1: Create the booking (status: pending)
-      const bookingRes = await fetch("http://localhost:5000/api/bookings", {
+      const bookingRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bookings`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -95,8 +94,7 @@ export default function Booking() {
 
       const booking = await bookingRes.json();
 
-      // Step 2: Create a Razorpay order
-      const orderRes = await fetch("http://localhost:5000/api/payment/create-order", {
+      const orderRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/create-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -107,17 +105,15 @@ export default function Booking() {
 
       const order = await orderRes.json();
 
-      // Step 3: Open Razorpay Checkout popup
       const options = {
-        key: "rzp_test_T9qRfqJLZgD1Z4", // Replace with your actual Key ID
+        key: "rzp_test_T9qRfqJLZgD1Z4",
         amount: order.amount,
         currency: order.currency,
         name: "Mystic Path",
         description: `${formData.duration} - Tarot Session`,
         order_id: order.id,
         handler: async function (response: any) {
-          // Step 4: Verify payment after success
-          const verifyRes = await fetch("http://localhost:5000/api/payment/verify", {
+          const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/verify`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

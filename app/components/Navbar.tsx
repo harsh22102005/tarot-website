@@ -36,7 +36,10 @@ export default function Navbar() {
     <nav className="bg-cream/90 backdrop-blur-md fixed top-0 left-0 w-full z-50 border-b border-beige">
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-20">
         {/* Logo */}
-        <Link href="/" className="font-heading text-2xl text-indigo font-semibold">
+        <Link
+          href="/"
+          className="font-heading text-2xl text-indigo font-semibold"
+        >
           ✦ Mystic Path
         </Link>
 
@@ -76,8 +79,10 @@ export default function Navbar() {
               >
                 Login
               </Link>
+
+              {/* Updated Route */}
               <Link
-                href="/services"
+                href="/booking"
                 className="bg-indigo text-cream px-6 py-2.5 rounded-full text-sm hover:bg-lavender-dark transition-colors"
               >
                 Book a Session
@@ -92,7 +97,14 @@ export default function Navbar() {
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
         >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
             {isOpen ? (
               <path d="M6 18L18 6M6 6l12 12" />
             ) : (
@@ -116,6 +128,7 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
+
           {user ? (
             <button
               onClick={() => {
@@ -135,8 +148,10 @@ export default function Navbar() {
               >
                 Login
               </Link>
+
+              {/* Updated Route */}
               <Link
-                href="/services"
+                href="/booking"
                 onClick={() => setIsOpen(false)}
                 className="bg-indigo text-cream px-6 py-2.5 rounded-full text-sm text-center"
               >

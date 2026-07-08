@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Services & Pricing | Mystic Path - Tarot Reading & Spiritual Guidance",
-  description: "Explore our tarot reading, spiritual consultation, healing prayers, and more. View session pricing starting from ₹500.",
+  description:
+    "Explore our tarot reading, spiritual consultation, healing prayers, and more. View session pricing starting from ₹500.",
 };
-import Link from "next/link";
 
 const pricing = [
   { duration: "15 Minutes", price: "₹500" },
@@ -15,10 +16,12 @@ const pricing = [
 
 async function getServices() {
   try {
-    const res = await fetch("http://localhost:5000/api/services", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/services`, {
       cache: "no-store",
     });
+
     if (!res.ok) throw new Error("Failed to fetch services");
+
     return res.json();
   } catch (error) {
     console.error(error);
@@ -53,14 +56,18 @@ export default async function Services() {
                 className="bg-beige rounded-2xl p-8 flex flex-col border border-beige"
               >
                 <div className="text-4xl mb-4">{service.icon}</div>
+
                 <h3 className="font-heading text-xl text-indigo mb-3">
                   {service.title}
                 </h3>
+
                 <p className="font-body text-sm text-indigo/70 leading-relaxed mb-6 flex-grow">
                   {service.description}
                 </p>
+
+                {/* Updated Button */}
                 <Link
-                  href="/contact"
+                  href="/booking"
                   className="bg-indigo text-cream text-center px-6 py-3 rounded-full font-body text-sm hover:bg-lavender-dark transition-colors"
                 >
                   Book Now
@@ -78,6 +85,7 @@ export default async function Services() {
             <span className="font-body text-sm tracking-[0.3em] text-lavender uppercase mb-4 block">
               Session Pricing
             </span>
+
             <h2 className="font-heading text-3xl md:text-5xl text-cream">
               Choose Your Session Length
             </h2>
@@ -92,6 +100,7 @@ export default async function Services() {
                 <p className="font-body text-sm text-cream/70 mb-2">
                   {item.duration}
                 </p>
+
                 <p className="font-heading text-3xl text-cream">
                   {item.price}
                 </p>

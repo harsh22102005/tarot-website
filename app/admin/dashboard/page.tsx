@@ -42,7 +42,7 @@ export default function AdminDashboard() {
 
   const fetchBookings = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/bookings");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bookings`);
       const data = await res.json();
       setBookings(data);
     } catch (err) {
@@ -55,7 +55,7 @@ export default function AdminDashboard() {
   const updateStatus = async (id: string, newStatus: string) => {
     try {
       const token = localStorage.getItem("token");
-      await fetch(`http://localhost:5000/api/bookings/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/bookings/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export default function AdminDashboard() {
         },
         body: JSON.stringify({ status: newStatus }),
       });
-      fetchBookings(); // Refresh the list
+      fetchBookings();
     } catch (err) {
       console.error("Failed to update status:", err);
     }

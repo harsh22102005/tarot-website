@@ -12,7 +12,7 @@ interface BlogPost {
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
   try {
-    const res = await fetch(`http://localhost:5000/api/blogs/${slug}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blogs/${slug}`, {
       cache: "no-store",
     });
     if (!res.ok) return null;
@@ -26,7 +26,7 @@ async function getBlogPost(slug: string): Promise<BlogPost | null> {
 async function getRelatedPosts(category: string, currentSlug: string) {
   try {
     const res = await fetch(
-      `http://localhost:5000/api/blogs?category=${category}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/blogs?category=${category}`,
       { cache: "no-store" }
     );
     const posts: BlogPost[] = await res.json();

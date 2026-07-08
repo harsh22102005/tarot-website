@@ -25,8 +25,8 @@ export default function Blog() {
       try {
         const url =
           selectedCategory === "All"
-            ? "http://localhost:5000/api/blogs"
-            : `http://localhost:5000/api/blogs?category=${selectedCategory}`;
+            ? `${process.env.NEXT_PUBLIC_API_URL}/api/blogs`
+            : `${process.env.NEXT_PUBLIC_API_URL}/api/blogs?category=${selectedCategory}`;
         const res = await fetch(url);
         const data = await res.json();
         setPosts(data);

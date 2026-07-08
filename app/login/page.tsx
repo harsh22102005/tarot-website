@@ -23,7 +23,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -35,11 +35,9 @@ export default function Login() {
         throw new Error(data.message || "Login failed");
       }
 
-      // Save token and user info in browser storage
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      // Redirect to homepage after successful login
       router.push("/");
     } catch (err: any) {
       setError(err.message);

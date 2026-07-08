@@ -21,7 +21,7 @@ export default function Contact() {
     setStatus("loading");
 
     try {
-      const res = await fetch("http://localhost:5000/api/contact", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -39,7 +39,6 @@ export default function Contact() {
 
   return (
     <div className="bg-cream">
-      {/* Page Header */}
       <section className="bg-beige py-20 md:py-28">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <span className="font-body text-sm tracking-[0.3em] text-lavender-dark uppercase mb-4 block">
@@ -51,10 +50,8 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Contact Content */}
       <section className="py-20 md:py-28">
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16">
-          {/* Contact Form */}
           <div>
             <h2 className="font-heading text-2xl text-indigo mb-6">
               Send a Message
@@ -125,7 +122,6 @@ export default function Contact() {
             </form>
           </div>
 
-          {/* Contact Info */}
           <div>
             <h2 className="font-heading text-2xl text-indigo mb-6">
               Contact Information
