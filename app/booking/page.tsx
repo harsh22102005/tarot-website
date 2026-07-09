@@ -106,7 +106,7 @@ export default function Booking() {
       const order = await orderRes.json();
 
       const options = {
-        key: "rzp_test_T9qRfqJLZgD1Z4",
+        key: "rzp_test_TAY05NuABUdquk",
         amount: order.amount,
         currency: order.currency,
         name: "Mystic Path",
